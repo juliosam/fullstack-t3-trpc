@@ -7,6 +7,7 @@ import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@c
 
 export default function Home() {
   const { data } = api.post.getAll.useQuery();
+  console.log(data);
 
   return (
     <>

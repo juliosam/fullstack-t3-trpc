@@ -6,7 +6,7 @@ import styles from "./index.module.css";
 import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 export default function Home() {
-  const hello = api.post.hello.useQuery({ text: "from tRPC" });
+  const { data } = api.post.getAll.useQuery();
 
   return (
     <>
@@ -53,8 +53,10 @@ export default function Home() {
             </Link>
           </div>
           <p className={styles.showcaseText}>
-            {hello.data ? hello.data.greeting : "Loading tRPC query..."}
           </p>
+          <div>
+            {data?.map((post) => (<div key={post.id}>{post.content}</div>))}
+          </div>
         </div>
       </main>
     </>

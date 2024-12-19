@@ -1,12 +1,64 @@
 import Head from "next/head";
 import Link from "next/link";
 
-import { api } from "~/utils/api";
+import { api, RouterOutputs } from "~/utils/api";
 import styles from "./index.module.css";
-import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
+
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime"
+
+dayjs.extend(relativeTime);
+
+const CreatePostWizard = () => {
+  const user = useUser();
+  if (!user) return null
+  console.log(user.user?.id);
+  return (
+    <div className={styles.post}>
+      <img src={user.user?.imageUrl} alt="Profile Img" className={styles.postImg}/>
+      <input 
+        placeholder='add comment...' 
+        style={{
+          width:'90%', 
+          background:'none', 
+          border:'none',
+          // border:'1px gray solid',
+          borderRadius:'0.3em', 
+          minHeight:'3.5em', 
+          color:'white',
+          padding:'0.5em 1em'
+        }}/>
+    </div>
+  )
+}
+
+type PostWithRouter = RouterOutputs["post"]["getAll"][number];
+
+const PostView = (props: PostWithRouter) => {
+  const {post, author} = props;
+  
+  return (
+    <div key={post.id} className={styles.tuit}>
+      {/* <div className={styles.tuitpic}>user-pic</div> */}
+      <img src={author?.profileImageUrl} className={styles.tuitpic}/>
+      <div style={{display:'flex', flexDirection:'column'}}>
+        <div style={{color:'darkgray'}}>
+          <span>{`@${author.username}`}</span> . 
+          <span style={{fontWeight:'lighter'}}> {dayjs(post.createdAt).fromNow()}</span>
+        </div>
+        <span>{post.content}</span>
+      </div>
+    </div>
+  )
+}
 
 export default function Home() {
-  const { data } = api.post.getAll.useQuery();
+  const { data, isLoading } = api.post.getAll.useQuery();
+
+  if (isLoading) return <div>Loading...</div>
+  if (!data) return <div>Something went wrong</div>
+
   console.log(data);
 
   return (
@@ -19,13 +71,30 @@ export default function Home() {
       <main className={styles.main}>
         <ClerkProvider>
           <SignedOut>
-            <SignInButton />
+            <div className={styles.header}>
+              <h2 className={styles.logo}>LOGO</h2>
+              <SignInButton />
+            </div>
           </SignedOut>
           <SignedIn>
-            <UserButton />
+            <div className={styles.header}>
+              <h2 className={styles.logo}>LOGO</h2>
+              <UserButton />
+            </div>
+            <CreatePostWizard/>
+            <div className={styles.list}>
+              {data?.map((fullPost) => (
+                // <div key={post.id} className={styles.tuit}>
+                //   <div className={styles.tuitpic}>user-pic</div>
+                //   <div>{post.content}</div>
+                // </div>
+                <PostView {...fullPost} key={fullPost.post.id}/>
+                )
+              )}
+            </div>
           </SignedIn>
         </ClerkProvider>
-        <div className={styles.container}>
+        {/* <div className={styles.container}>
           <h1 className={styles.title}>
             Create <span className={styles.pinkSpan}>T3</span> App
           </h1>
@@ -55,11 +124,10 @@ export default function Home() {
           </div>
           <p className={styles.showcaseText}>
           </p>
-          <div>
-            {data?.map((post) => (<div key={post.id}>{post.content}</div>))}
-          </div>
-        </div>
+        </div> */}
       </main>
     </>
   );
 }
+
+

@@ -7,11 +7,21 @@ import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton, useUser }
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
+import { useState } from "react";
 
 dayjs.extend(relativeTime);
 
 const CreatePostWizard = () => {
   const user = useUser();
+  const [input, setInput] = useState("");
+  const ctx = api.useContext()
+  const { mutate, isPending: isPosting } = api.post.create.useMutation({ 
+    onSuccess: () => {
+      setInput("");
+      void  ctx.post.getAll.invalidate();
+    }
+  });
+
   if (!user) return null
   console.log(user.user?.id);
   return (
@@ -28,7 +38,13 @@ const CreatePostWizard = () => {
           minHeight:'3.5em', 
           color:'white',
           padding:'0.5em 1em'
-        }}/>
+        }}
+        type="text"
+        value={input}
+        onChange={(e)=> setInput(e.target.value)}
+        disabled={isPosting}
+      />
+      <button onClick={()=> mutate({content: input})}>Post</button>
     </div>
   )
 }
@@ -84,47 +100,12 @@ export default function Home() {
             <CreatePostWizard/>
             <div className={styles.list}>
               {data?.map((fullPost) => (
-                // <div key={post.id} className={styles.tuit}>
-                //   <div className={styles.tuitpic}>user-pic</div>
-                //   <div>{post.content}</div>
-                // </div>
                 <PostView {...fullPost} key={fullPost.post.id}/>
                 )
               )}
             </div>
           </SignedIn>
         </ClerkProvider>
-        {/* <div className={styles.container}>
-          <h1 className={styles.title}>
-            Create <span className={styles.pinkSpan}>T3</span> App
-          </h1>
-          <div className={styles.cardRow}>
-            <Link
-              className={styles.card}
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
-            >
-              <h3 className={styles.cardTitle}>First Steps →</h3>
-              <div className={styles.cardText}>
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
-              </div>
-            </Link>
-            <Link
-              className={styles.card}
-              href="https://create.t3.gg/en/introduction"
-              target="_blank"
-            >
-              <h3 className={styles.cardTitle}>Documentation →</h3>
-              <div className={styles.cardText}>
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
-              </div>
-            </Link>
-          </div>
-          <p className={styles.showcaseText}>
-          </p>
-        </div> */}
       </main>
     </>
   );

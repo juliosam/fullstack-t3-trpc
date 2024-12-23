@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { NextPage } from "next";
 
 dayjs.extend(relativeTime);
 
@@ -56,7 +57,7 @@ const CreatePostWizard = () => {
           if(e.key === "Enter"){
             e.preventDefault;
             if(input !== ""){
-              mutate({content:input})
+              mutate({content: input})
             }
           }
         }}
@@ -80,8 +81,10 @@ const PostView = (props: PostWithRouter) => {
       <img src={author?.profileImageUrl} className={styles.tuitpic}/>
       <div style={{display:'flex', flexDirection:'column'}}>
         <div style={{color:'darkgray'}}>
-          <span>{`@${author.username}`}</span> . 
+          <Link href={`/@${author.username}`}><span>{`@${author.username}`}</span> .</Link>
+          <Link href={`/post/${post.id}`}>
           <span style={{fontWeight:'lighter'}}> {dayjs(post.createdAt).fromNow()}</span>
+          </Link>
         </div>
         <span>{post.content}</span>
       </div>
@@ -89,7 +92,7 @@ const PostView = (props: PostWithRouter) => {
   )
 }
 
-export default function Home() {
+const Home: NextPage = () => {
   const { data, isLoading } = api.post.getAll.useQuery();
 
   if (isLoading) return <div>Loading...</div>
@@ -130,6 +133,8 @@ export default function Home() {
       </main>
     </>
   );
-}
+};
+
+export default Home;
 
 

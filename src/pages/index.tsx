@@ -23,12 +23,8 @@ const CreatePostWizard = () => {
       void  ctx.post.getAll.invalidate();
     },
     onError: (e) => {
-      const errorMessage = e.data?.zodError?.fieldErrors.content;
-      if(errorMessage && errorMessage[0]){
-        toast.error(errorMessage[0])
-      } else {
-        toast.error("Failed to post, please try again later")
-      }
+      const errorMessage = e.data?.zodError?.fieldErrors.content?.[0];
+      toast.error(errorMessage ?? "Failed to post, please try again later");
     }
   });
 

@@ -8,6 +8,7 @@ import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton, useUser }
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 dayjs.extend(relativeTime);
 
@@ -19,6 +20,14 @@ const CreatePostWizard = () => {
     onSuccess: () => {
       setInput("");
       void  ctx.post.getAll.invalidate();
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      if(errorMessage && errorMessage[0]){
+        toast.error(errorMessage[0])
+      } else {
+        toast.error("Failed to post, please try again later")
+      }
     }
   });
 
@@ -43,8 +52,19 @@ const CreatePostWizard = () => {
         value={input}
         onChange={(e)=> setInput(e.target.value)}
         disabled={isPosting}
+        onKeyDown={(e) => {
+          if(e.key === "Enter"){
+            e.preventDefault;
+            if(input !== ""){
+              mutate({content:input})
+            }
+          }
+        }}
       />
-      <button onClick={()=> mutate({content: input})}>Post</button>
+      {input !== "" && !isPosting && (<button onClick={()=> mutate({content: input})} disabled={isPosting} className={styles.postButton}>
+        Post
+      </button>)}
+      {isPosting && <div>Loading...</div>}
     </div>
   )
 }
@@ -86,6 +106,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <ClerkProvider>
+          <Toaster position="bottom-center"/>
           <SignedOut>
             <div className={styles.header}>
               <h2 className={styles.logo}>LOGO</h2>

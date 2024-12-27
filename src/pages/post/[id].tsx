@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { NextPage } from "next";
+import { PageLayout } from "~/components/layout";
 
 const SinglePostPage: NextPage = () => {
 
@@ -8,9 +9,9 @@ const SinglePostPage: NextPage = () => {
       <Head>
         <title>Post</title>
       </Head>
-      <main style={{color:"black"}}>
+      <PageLayout>
         Single Post Page
-      </main>
+      </PageLayout>
     </>
   );
 };

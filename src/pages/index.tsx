@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { api, RouterOutputs } from "~/utils/api";
 import styles from "./index.module.css";
-import { SignInButton, SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
+import { SignedIn, SignedOut, useUser } from '@clerk/nextjs';
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
@@ -106,25 +106,15 @@ const Home: NextPage = () => {
       </Head>
       <PageLayout>
         <Toaster position="bottom-center"/>
-        <SignedOut>
-          <div className={styles.header}>
-            <h2 className={styles.logo}>LOGO</h2>
-            <SignInButton />
-          </div>
-        </SignedOut>
         <SignedIn>
-          <div className={styles.header}>
-            <h2 className={styles.logo}>LOGO</h2>
-            <UserButton />
-          </div>
           <CreatePostWizard/>
-          <div className={styles.list}>
-            {data?.map((fullPost) => (
-              <PostView {...fullPost} key={fullPost.post.id}/>
-              )
-            )}
-          </div>
         </SignedIn>
+        <div className={styles.list}>
+          {data?.map((fullPost) => (
+            <PostView {...fullPost} key={fullPost.post.id}/>
+            )
+          )}
+        </div>
       </PageLayout>
     </>
   );

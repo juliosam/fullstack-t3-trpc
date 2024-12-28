@@ -5,6 +5,9 @@ import { api } from "~/utils/api";
 import { PageLayout } from "~/components/layout";
 import styles from "./index.module.css";
 import { PostView } from "~/components/postview";
+import { getSSGHelper } from "~/server/helpers/ssgHelper";
+// getStaticProps y getStaticPaths
+import { GetStaticProps, GetStaticPaths } from "next";
 
 const ProfileFeed = (props: {userId: string}) => {
   const {data, isLoading} = api.post.getPostsByUserId.useQuery({
@@ -55,22 +58,8 @@ const ProfilePage: NextPage<ProfilePageProps> = ({ username }) => {
   );
 };
 
-// ssgHelper.ts
-import { createServerSideHelpers } from "@trpc/react-query/server";
-import superjson from "superjson";
-import { appRouter } from "~/server/api/root";
-import { db } from "~/server/db";
-
-// getStaticProps y getStaticPaths
-import { GetStaticProps, GetStaticPaths } from "next";
-
 export const getStaticProps: GetStaticProps = async (context) => {
-  const ctx = {db, userId: null}
-  const ssg = createServerSideHelpers({
-    router: appRouter,
-    ctx,
-    transformer: superjson,
-  });
+  const ssg = getSSGHelper()
   const slug = context.params?.slug as string | undefined;
 
   if (!slug) {
@@ -95,7 +84,5 @@ export const getStaticPaths: GetStaticPaths = () => {
     fallback: "blocking", // Corrige el typo
   };
 };
-
-
 
 export default ProfilePage;

@@ -7,7 +7,9 @@ export const PageLayout = (props: PropsWithChildren) => {
     return (
         <main className={styles.main}>
             <Header/>
-            {props.children}
+            <div className={styles.container}>       
+                {props.children}
+            </div>
         </main>
     )
 }

@@ -3,6 +3,26 @@ import Head from "next/head";
 import { NextPage } from "next";
 import { api } from "~/utils/api";
 import { PageLayout } from "~/components/layout";
+import styles from "./index.module.css";
+import { PostView } from "~/components/postview";
+
+const ProfileFeed = (props: {userId: string}) => {
+  const {data, isLoading} = api.post.getPostsByUserId.useQuery({
+    userId: props.userId
+  });
+  
+  if (isLoading) return <div>Is Loading...</div>
+
+  if (!data || data.length === 0) return <div>User has not posted</div>
+  console.log(data)
+  return (
+    <div>
+      {data.map((fullPost) => (
+        <PostView {...fullPost} key={fullPost.post.id}/>
+      ))}
+    </div>
+  )
+};
 
 interface ProfilePageProps {
   username: string;
@@ -21,9 +41,15 @@ const ProfilePage: NextPage<ProfilePageProps> = ({ username }) => {
         <title>{data.username} profile</title>
       </Head>
       <PageLayout>
-        <h1>User Profile Page</h1>
-        <p>Username: {data.username}</p>
-        {/* Renderiza más información del usuario aquí */}
+        <div className={styles.profiletop}>
+          <img
+            src={data.profileImageUrl}
+          />
+        </div>
+        <div className={styles.profileinfo}>
+          <h1>@{data.username}</h1>
+          <ProfileFeed userId={data.id}/>
+        </div>
       </PageLayout>
     </>
   );

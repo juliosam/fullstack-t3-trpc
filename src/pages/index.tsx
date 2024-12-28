@@ -1,18 +1,14 @@
 import Head from "next/head";
-import Link from "next/link";
 
-import { api, RouterOutputs } from "~/utils/api";
+import { api } from "~/utils/api";
 import styles from "./index.module.css";
 import { SignedIn, SignedOut, useUser } from '@clerk/nextjs';
 
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime"
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { NextPage } from "next";
 import { PageLayout } from "~/components/layout";
-
-dayjs.extend(relativeTime);
+import { PostView } from "~/components/postview";
 
 const CreatePostWizard = () => {
   const user = useUser();
@@ -65,29 +61,7 @@ const CreatePostWizard = () => {
       {isPosting && <div>Loading...</div>}
     </div>
   )
-}
-
-type PostWithRouter = RouterOutputs["post"]["getAll"][number];
-
-const PostView = (props: PostWithRouter) => {
-  const {post, author} = props;
-  
-  return (
-    <div key={post.id} className={styles.tuit}>
-      {/* <div className={styles.tuitpic}>user-pic</div> */}
-      <img src={author?.profileImageUrl} className={styles.tuitpic}/>
-      <div style={{display:'flex', flexDirection:'column'}}>
-        <div style={{color:'darkgray'}}>
-          <Link href={`/@${author.username}`}><span>{`@${author.username}`}</span> .</Link>
-          <Link href={`/post/${post.id}`}>
-          <span style={{fontWeight:'lighter'}}> {dayjs(post.createdAt).fromNow()}</span>
-          </Link>
-        </div>
-        <span>{post.content}</span>
-      </div>
-    </div>
-  )
-}
+};
 
 const Home: NextPage = () => {
   const { data, isLoading } = api.post.getAll.useQuery();
@@ -109,7 +83,7 @@ const Home: NextPage = () => {
         <SignedIn>
           <CreatePostWizard/>
         </SignedIn>
-        <div className={styles.list}>
+        <div>
           {data?.map((fullPost) => (
             <PostView {...fullPost} key={fullPost.post.id}/>
             )

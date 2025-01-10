@@ -12,10 +12,62 @@ datasource db {
 }
 
 model Post {
-    id        String      @id @default(cuid())
-    createdAt DateTime @default(now())
-    content   String   @db.VarChar(255)
-    authorId  String
+    id          String     @id @default(cuid())
+    createdAt   DateTime   @default(now())
+    content     String     @db.VarChar(255)
+    authorId    String
 
     @@index([authorId])
 }
+
+model Sales {
+    id          String     @id @default(cuid())
+    saleDay     DateTime   @default(now())
+    productDesc String     @db.VarChar(255)
+    productType String
+    price       Int
+    sealerId    String
+
+    @@index([sealerId])
+}
+
+model Products {
+    id          String     @id @default(cuid())
+    brand       String
+    productDesc String     @db.VarChar(255)
+    productType String
+    price       Int
+    sealerId    String
+    volume      Int
+    mesure      String
+    stores      StoreProduct[] // Relación con la tabla StoreProduct
+
+    @@index([productDesc])
+}
+
+model Stores {
+    id          String     @id @default(cuid())
+    storeDesc   String     @db.VarChar(255)
+    storeName   String
+    lat         Float
+    lng         Float
+    products    StoreProduct[] // Relación con la tabla StoreProduct
+
+    @@index([storeName])
+}
+
+model StoreProduct {
+  id          Int        @id @default(autoincrement())
+  storeId     String        // ID de la tienda
+  productId   String        // ID del producto
+  price       Float      // Precio del producto en la tienda específica
+  stock       Int        // Cantidad en inventario en esta tienda
+  store       Stores      @relation(fields: [storeId], references: [id])
+  product     Products    @relation(fields: [productId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@unique([storeId, productId]) // Una tienda no puede tener el mismo producto duplicado
+}
+
+

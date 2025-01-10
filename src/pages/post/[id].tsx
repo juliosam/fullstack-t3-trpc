@@ -23,7 +23,7 @@ const SinglePostPage: NextPage<SinglePostPageProps> = ({ id }) => {
   return (
     <>
       <Head>
-        <title>{`${data.post.content} - ${data.author.username}`} profile</title>
+        <title>{data.post.content.substring(0,25)}</title>
       </Head>
       <PageLayout>
         <PostView {...data}/>

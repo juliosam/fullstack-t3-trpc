@@ -92,6 +92,44 @@
   left: 2em;
 }
 
+.leaflet-popup-content{
+  margin: 0;
+  padding: 0;
+  background-color: red;
+}
+
+.storedesc{
+  font-weight: 700;
+  width: 16em;
+}
+
+.productlist{
+  max-height: 11em;
+  overflow: scroll;
+}
+
+.productitem{
+  background-color: #2e026d;
+  color: azure;
+  padding: 0.5em;
+  margin: 0.2em;
+  border-radius: 0.5em;
+}
+
+.productdesc{
+  margin:0.2em 0;
+
+}
+
+.productinfoblock{
+  display: flex;
+  align-items: center;
+}
+
+.productinfo{
+  margin:0.2em 0;
+}
+
 @media (min-width: 640px) {
   .container {
     max-width: 640px;

@@ -25,9 +25,7 @@ const Home: NextPage = () => {
     
     // Filtra las tiendas que tengan al menos un producto cuyo `productDesc` coincida
     const storesWP = data.filter((store) =>
-      store.products.some((product) =>
-        product.product.productDesc &&
-        product.product.productDesc.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+      store.products.some((product) => product.product.productDesc.toLocaleLowerCase().includes(value.toLocaleLowerCase())
       )
     );
   

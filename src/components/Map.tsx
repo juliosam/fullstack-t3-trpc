@@ -17,7 +17,7 @@ import './components.css'
 
 
   
-  const getIcon = (variant:any) => {
+  const getIcon = (variant:string) => {
     const iconUrls = {
         'Seven Eleven': 'https://qrp3fncp5h.ufs.sh/f/pvcc1agPKRfFWqN3QVLwdRxWNpQtSrHzm1XfyAM3PiZvuOaj',
         'Oxxo': 'https://qrp3fncp5h.ufs.sh/f/pvcc1agPKRfFbJCS8E4IyBFuVqUSol4akZ8XK3wEizn2cPtQ',

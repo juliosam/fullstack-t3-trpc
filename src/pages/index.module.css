@@ -22,7 +22,7 @@
 
 .post {
   color: white;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   border-left: 1px white solid;
   border-right: 1px white solid;
   min-height: 5em;
@@ -44,21 +44,21 @@
   flex: 1;
 }
 
-.tuit{
+.tuit {
   width: 100%;
   border: 1px white solid;
   padding: 1em 2em;
   display: flex;
 }
 
-.tuitpic{
+.tuitpic {
   margin-right: 2em;
   width: 2em;
   height: 2em;
   border-radius: 1em;
 }
 
-.postButton{
+.postButton {
   color: white;
   background: none;
   border: none;
@@ -66,7 +66,7 @@
   width: 7em;
 }
 
-.profiletop{
+.profiletop {
   background-color: lightgrey;
   width: 100%;
   position: relative;
@@ -74,15 +74,15 @@
   border-bottom: 0.3em solid darkslateblue;
 }
 
-.profileinfo{
+.profileinfo {
   padding: 6em 0 2em 0;
 }
 
-.profileinfo h1{
+.profileinfo h1 {
   padding: 0 2em 0 1em;
 }
 
-.profiletop img{
+.profiletop img {
   width: 10em;
   height: 10em;
   position: absolute;
@@ -92,23 +92,23 @@
   left: 2em;
 }
 
-.leaflet-popup-content{
+.leaflet-popup-content {
   margin: 0;
   padding: 0;
   background-color: red;
 }
 
-.storedesc{
+.storedesc {
   font-weight: 700;
   width: 16em;
 }
 
-.productlist{
+.productlist {
   max-height: 11em;
   overflow: scroll;
 }
 
-.productitem{
+.productitem {
   background-color: #2e026d;
   color: azure;
   padding: 0.5em;
@@ -116,18 +116,60 @@
   border-radius: 0.5em;
 }
 
-.productdesc{
-  margin:0.2em 0;
-
+.productdesc {
+  margin: 0.2em 0;
 }
 
-.productinfoblock{
+.productinfoblock {
   display: flex;
   align-items: center;
 }
 
-.productinfo{
-  margin:0.2em 0;
+.productinfo {
+  margin: 0.2em 0;
+}
+
+.storesformpair {
+  display: flex;
+  padding: 1em 7em;
+  min-height: 4em;
+}
+
+.storesformpair input {
+  flex: 1;
+  border-radius: 0.5em;
+  padding: 0 1.5em;
+}
+
+.storesformpair textarea {
+  flex: 1;
+  min-height: 5em;
+  border-radius: 0.5em;
+  padding: 0.5em 1.5em;
+}
+
+.storesformpair label {
+  width: 30%;
+}
+
+.storesformsubmitbutton {
+  display: flex;
+  justify-content: center;
+  padding-top: 1em;
+}
+
+.storesformsubmitbutton button {
+  width: 40%;
+  height: 2.4em;
+  font-size: 1.2em;
+  border-radius: 0.5em;
+  color: white;
+  background-color: #55a;
+}
+
+.storesformsubmitbutton button:hover {
+  background-color: #77a;
+  cursor: pointer;
 }
 
 @media (min-width: 640px) {

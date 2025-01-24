@@ -1,30 +1,31 @@
 // ProfilePage.tsx
 import Head from "next/head";
-import { NextPage } from "next";
+import type { NextPage } from "next";
+// import Image from "next/image";
 import { api } from "~/utils/api";
 import { PageLayout } from "~/components/layout";
 import styles from "./index.module.css";
 import { PostView } from "~/components/postview";
 import { getSSGHelper } from "~/server/helpers/ssgHelper";
 // getStaticProps y getStaticPaths
-import { GetStaticProps, GetStaticPaths } from "next";
+import type { GetStaticProps, GetStaticPaths } from "next";
 
-const ProfileFeed = (props: {userId: string}) => {
-  const {data, isLoading} = api.post.getPostsByUserId.useQuery({
-    userId: props.userId
+const ProfileFeed = (props: { userId: string }) => {
+  const { data, isLoading } = api.post.getPostsByUserId.useQuery({
+    userId: props.userId,
   });
-  
-  if (isLoading) return <div>Is Loading...</div>
 
-  if (!data || data.length === 0) return <div>User has not posted</div>
-  console.log(data)
+  if (isLoading) return <div>Is Loading...</div>;
+
+  if (!data || data.length === 0) return <div>User has not posted</div>;
+  console.log(data);
   return (
     <div>
       {data.map((fullPost) => (
-        <PostView {...fullPost} key={fullPost.post.id}/>
+        <PostView {...fullPost} key={fullPost.post.id} />
       ))}
     </div>
-  )
+  );
 };
 
 interface ProfilePageProps {
@@ -33,7 +34,7 @@ interface ProfilePageProps {
 
 const ProfilePage: NextPage<ProfilePageProps> = ({ username }) => {
   console.log(username);
-  const { data} = api.profile.getUserByUserName.useQuery({
+  const { data } = api.profile.getUserByUserName.useQuery({
     username,
   });
   if (!data) return <div>404 - User not found</div>;
@@ -45,13 +46,11 @@ const ProfilePage: NextPage<ProfilePageProps> = ({ username }) => {
       </Head>
       <PageLayout>
         <div className={styles.profiletop}>
-          <img
-            src={data.profileImageUrl}
-          />
+          <img alt="" src={data.profileImageUrl} />
         </div>
         <div className={styles.profileinfo}>
           <h1>@{data.username}</h1>
-          <ProfileFeed userId={data.id}/>
+          <ProfileFeed userId={data.id} />
         </div>
       </PageLayout>
     </>
@@ -59,7 +58,7 @@ const ProfilePage: NextPage<ProfilePageProps> = ({ username }) => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const ssg = getSSGHelper()
+  const ssg = getSSGHelper();
   const slug = context.params?.slug as string | undefined;
 
   if (!slug) {

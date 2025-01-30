@@ -51,9 +51,10 @@ model Stores {
     storeName   String
     lat         Float
     lng         Float
+    userId      String     @default("x")
     products    StoreProduct[] // Relación con la tabla StoreProduct
 
-    @@index([storeName])
+    @@index([userId])
 }
 
 model StoreProduct {

@@ -45,6 +45,7 @@ export const storesRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const userId = ctx.userId;
       const { storeDesc, storeName, lat, lng } = input;
       await ctx.db.stores.create({
         data: {
@@ -52,6 +53,7 @@ export const storesRouter = createTRPCRouter({
           storeName,
           lat,
           lng,
+          userId,
         },
       });
     }),

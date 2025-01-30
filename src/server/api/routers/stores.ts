@@ -5,6 +5,8 @@ import {
 } from "~/server/api/trpc";
 import { z } from "zod";
 
+//comentario prueba
+
 export const storesRouter = createTRPCRouter({
   getAllStores: publicProcedure.query(async ({ ctx }) => {
     const stores = await ctx.db.stores.findMany({
